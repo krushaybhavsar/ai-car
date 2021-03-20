@@ -2,6 +2,8 @@ import pygame, sys, neat
 from main import *
 
 def run_simulation(genomes, config):
+
+    hide_road = False
     
     # Empty Collections For Nets and Cars
     nets = []
@@ -61,8 +63,15 @@ def run_simulation(genomes, config):
         if counter == 30 * 40: # Stop After About 20 Seconds
             break
 
-        # Draw Map And All Cars That Are Alive
+        # Draw Map And All Cars That Are 
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]: 
+            hide_road = True
+        else:
+            hide_road = False
         screen.blit(road, (0, 0))
+        if hide_road:
+            screen.fill((0, 0, 0))
         for car in cars:
             if car.get_state():
                 car.draw_screen(screen, road)

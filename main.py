@@ -75,7 +75,6 @@ class Racecar:
         return rotated_image
 
     def update_rays(self, road):
-        # for degree in range(-90, 90, 30):
         for degree in range(-90, 120, 45):
             length = 0
             x = int(self.center[0] + math.cos(math.radians(360 - (self.angle + degree))) * length)
@@ -96,9 +95,9 @@ class Racecar:
 
     def get_distance(self):
         # Get Distances To Border
-        radars = self.lidar_rays
+        rays = self.lidar_rays
         return_values = [0, 0, 0, 0, 0]
-        for i, radar in enumerate(radars):
+        for i, ray in enumerate(rays):
             return_values[i] = int(self.lidar_rays[1][1] / 30)
         return return_values
 
@@ -109,7 +108,6 @@ class Racecar:
         return self.distance_driven / 50.0 # You can change this number
 
     def draw_screen(self, screen, road):
-        # screen.fill((0, 0, 0))
         screen.blit(self.rotated_sprite, self.position)
         for point in self.points:
             pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)

@@ -14,7 +14,14 @@ def run(app, screen, clock, road):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     app.running = False
-            screen.blit(road, (0,0))
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]: 
+                hide_road = True
+            else:
+                hide_road = False
+            screen.blit(road, (0, 0))
+            if hide_road:
+                screen.fill((0, 0, 0))
             app.draw_screen(screen, road)
             pygame.display.update()
             control(app)
