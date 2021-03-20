@@ -52,12 +52,13 @@ class App:
         sys.exit()
 
     def move(self):
-        # User Movement
+        ######## User Movement ########
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]: 
             self.angle += STEERING
         if keys[pygame.K_RIGHT]: 
             self.angle -= STEERING
+        ######## User Movement ########
 
         self.rotated_sprite = self.rotate_center(self.car, self.angle)
         self.position[0] += math.cos(math.radians(360 - self.angle)) * self.speed
@@ -76,15 +77,14 @@ class App:
         self.points[2][0] = [self.center[0] + math.cos(math.radians(360 - (self.angle + 30))) * length, self.center[1] + math.sin(math.radians(360 - (self.angle + 30))) * length]
         self.points[3][0] = [self.center[0] + math.cos(math.radians(360 - (self.angle + 210))) * length, self.center[1] + math.sin(math.radians(360 - (self.angle + 210))) * length]
 
-        # Increase Distance and Time
         self.distance_driven += self.speed
         self.time_driven += 1
+
         self.lidar_rays.clear()
         self.update_rays()
         
 
     def rotate_center(self, image, angle):
-        # Rotate The Rectangle
         rectangle = image.get_rect()
         rotated_image = pygame.transform.rotate(image, angle)
         rotated_rectangle = rectangle.copy()
@@ -97,12 +97,12 @@ class App:
             length = 0
             x = int(self.center[0] + math.cos(math.radians(360 - (self.angle + degree))) * length)
             y = int(self.center[1] + math.sin(math.radians(360 - (self.angle + degree))) * length)
-            while not self.road.get_at((x, y)) == COLLISION_COLOR: #and length < 300:
+            while not self.road.get_at((x, y)) == COLLISION_COLOR:
                 length = length + 1
                 x = int(self.center[0] + math.cos(math.radians(360 - (self.angle + degree))) * length)
                 y = int(self.center[1] + math.sin(math.radians(360 - (self.angle + degree))) * length)
-            dist = int(math.sqrt(math.pow(x - self.center[0], 2) + math.pow(y - self.center[1], 2)))
-            self.lidar_rays.append([(x, y), dist])
+            distance = math.sqrt(math.pow(x - self.center[0], 2) + math.pow(y - self.center[1], 2))
+            self.lidar_rays.append([(x, y), distance])
 
     def check_collision(self):
         for point in self.points:
