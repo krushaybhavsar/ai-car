@@ -18,7 +18,7 @@ def run_simulation(genomes, config):
         nets.append(net)
         g.fitness = 0
 
-        cars.append(Racecar())
+        cars.append(Racecar(10))
     
     global current_generation
     current_generation += 1

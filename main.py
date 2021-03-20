@@ -17,9 +17,8 @@ current_generation = 0
 
 class Racecar:
 
-    def __init__(self):
-        #self.running = True
-        #self.road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road.png')
+    def __init__(self, set_speed_num):
+        self.running = True
         self.car = pygame.transform.scale(pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car.png'), (CAR_SIZE, CAR_SIZE))
         self.rotated_sprite = self.car
         self.position = [320, 480]
@@ -27,6 +26,7 @@ class Racecar:
         self.distance_driven = 0
         self.time_driven = 0
         self.speed = 0
+        self.set_speed_num = set_speed_num
         self.speed_set = False
         self.angle = 0
         self.center_point = [self.position[0] + CAR_SIZE / 2, self.position[1] + CAR_SIZE / 2]
@@ -34,40 +34,21 @@ class Racecar:
         # Lidars and Collision Points
         self.points = [[[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)]]
         self.lidar_rays = []
-    
-    # def run(self, screen, clock, road):
-    #     while self.running:
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.QUIT:
-    #                 self.running = False
-    #         self.draw_screen(screen, road)
-    #         self.move(road)
-    #         self.check_collision(road)
-    #         clock.tick(FPS)
-    #     pygame.quit()
-    #     sys.exit()
 
     def move(self, road):
-        ######## User Movement ########
-        # keys = pygame.key.get_pressed()
-        # if keys[pygame.K_LEFT]: 
-        #     self.angle += STEERING
-        # if keys[pygame.K_RIGHT]: 
-        #     self.angle -= STEERING
-        ######## User Movement ########
 
         if not self.speed_set:
-            self.speed = 20
+            self.speed = self.set_speed_num
             self.speed_set = True
 
         self.rotated_sprite = self.rotate_center(self.car, self.angle)
         self.position[0] += math.cos(math.radians(360 - self.angle)) * self.speed
         self.position[0] = max(self.position[0], 5)
-        self.position[0] = min(self.position[0], WIDTH - 35)
+        self.position[0] = min(self.position[0], WIDTH - 40)
 
         self.position[1] += math.sin(math.radians(360 - self.angle)) * self.speed
         self.position[1] = max(self.position[1], 5)
-        self.position[1] = min(self.position[1], HEIGHT - 35)
+        self.position[1] = min(self.position[1], HEIGHT - 40)
 
         self.center = [self.position[0] + CAR_SIZE / 2, self.position[1] + CAR_SIZE / 2]
 
@@ -112,9 +93,6 @@ class Racecar:
             if road.get_at((int(point[0][0]), int(point[0][1]))) == COLLISION_COLOR:
                 self.alive = False
                 break
-            #     point[1] = (255, 0, 0)
-            # else:
-            #     point[1] = (0, 255, 0)
 
     def get_distance(self):
         # Get Distances To Border
@@ -131,7 +109,6 @@ class Racecar:
         return self.distance_driven / 50.0 # You can change this number
 
     def draw_screen(self, screen, road):
-        # screen.blit(road, (0,0))
         # screen.fill((0, 0, 0))
         screen.blit(self.rotated_sprite, self.position)
         for point in self.points:
@@ -139,14 +116,3 @@ class Racecar:
         for ray in self.lidar_rays:
             pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
             pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
-        # pygame.display.update()
-
-# def run_game():
-#     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-#     clock = pygame.time.Clock()
-
-#     app = Racecar()
-#     app.run(screen, clock)
-
-# if __name__ == "__main__":
-#     run_game()
