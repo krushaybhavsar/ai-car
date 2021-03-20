@@ -2,27 +2,22 @@ import pygame, sys, math
 
 pygame.init()
 
-# Screen Settings
+# General Settings
 WIDTH = 800
 HEIGHT = 600
 FPS = 60
-
 CAR_SIZE = 35
-
-# Gameplay Settings
 STEERING = 5
-INITIAL_SPEED = 1
+INITIAL_SPEED = 3
 COLLISION_COLOR = (90, 189, 66, 255)
 
-# Collision and Lidar Vision 
+# Collision and Lidar Vision Settings
 POINT_SIZE = 5
 CIRCLE_SIZE = 5
 
-class App:
+class Racecar:
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.clock = pygame.time.Clock()
         self.running = True
         self.road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road.png')
         self.car = pygame.transform.scale(pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car.png'), (CAR_SIZE, CAR_SIZE))
@@ -39,15 +34,15 @@ class App:
         self.points = [[[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)], [[0, 0], (0, 255, 0)]]
         self.lidar_rays = []
     
-    def run(self):
+    def run(self, screen, clock):
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            self.draw_screen()
+            self.draw_screen(screen)
             self.move()
             self.check_collision()
-            self.clock.tick(FPS)
+            clock.tick(FPS)
         pygame.quit()
         sys.exit()
 
@@ -111,20 +106,35 @@ class App:
             else:
                 point[1] = (0, 255, 0)
 
-    def draw_screen(self):
-        self.screen.blit(self.road, (0,0))
-        #self.screen.fill((0, 0, 0))
-        self.screen.blit(self.rotated_sprite, self.position)
-        for point in self.points:
-            pygame.draw.circle(self.screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
+    def get_distance(self):
+        ray_distances = []
         for ray in self.lidar_rays:
-            pygame.draw.line(self.screen, (255, 255, 0), self.center, ray[0])
-            pygame.draw.circle(self.screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
+            ray_distances.append(ray[1])
+        return ray_distances
+
+    def get_state(self):
+        return self.alive
+
+    def calculate_reward(self):
+        return self.distance_driven / 15.0 # You can change this number
+
+    def draw_screen(self, screen):
+        screen.blit(self.road, (0,0))
+        # self.screen.fill((0, 0, 0))
+        screen.blit(self.rotated_sprite, self.position)
+        for point in self.points:
+            pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
+        for ray in self.lidar_rays:
+            pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
+            pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
         pygame.display.update()
 
 def run_game():
-    app = App()
-    app.run()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
+
+    app = Racecar()
+    app.run(screen, clock)
 
 if __name__ == "__main__":
     run_game()
