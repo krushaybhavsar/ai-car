@@ -17,11 +17,11 @@ current_generation = 0
 
 class Racecar:
 
-    def __init__(self, set_speed_num):
+    def __init__(self, set_speed_num, y_step):
         self.running = True
         self.car = pygame.transform.scale(pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car.png'), (CAR_SIZE, CAR_SIZE))
         self.rotated_sprite = self.car
-        self.position = [320, 480]
+        self.position = [320, 480+y_step]
         self.alive = True
         self.distance_driven = 0
         self.time_driven = 0
@@ -109,8 +109,8 @@ class Racecar:
 
     def draw_screen(self, screen, road):
         screen.blit(self.rotated_sprite, self.position)
-        for point in self.points:
-            pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
-        for ray in self.lidar_rays:
-            pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
-            pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
+        # for point in self.points:
+        #     pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
+        # for ray in self.lidar_rays:
+        #     pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
+        #     pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)

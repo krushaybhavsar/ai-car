@@ -6,7 +6,7 @@ def run_game():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    app = Racecar(1)
+    app = Racecar(1,0)
     run(app, screen, clock, road)
 
 def run(app, screen, clock, road):

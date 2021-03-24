@@ -15,12 +15,14 @@ def run_simulation(genomes, config):
     clock = pygame.time.Clock()
     road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road.png')
     
+    step = 0
     for i, g in genomes:
         net = neat.nn.FeedForwardNetwork.create(g, config)
         nets.append(net)
         g.fitness = 0
 
-        cars.append(Racecar(10))
+        cars.append(Racecar(10, step))
+        step += 0.25
     
     global current_generation
     current_generation += 1
@@ -39,9 +41,9 @@ def run_simulation(genomes, config):
             output = nets[i].activate(car.get_distance())
             choice = output.index(max(output))
             if choice == 0:
-                car.angle += 10 # Left
+                car.angle += 12 # Left
             elif choice == 1:
-                car.angle -= 10 # Right
+                car.angle -= 12 # Right
             elif choice == 2:
                 if(car.speed - 2 >= 12):
                     car.speed -= 2 # Slow Down
@@ -77,15 +79,19 @@ def run_simulation(genomes, config):
                 car.draw_screen(screen, road)
         
         # Display Info
-        # text = generation_font.render("Generation: " + str(current_generation), True, (0,0,0))
-        # text_rect = text.get_rect()
-        # text_rect.center = (900, 450)
-        # screen.blit(text, text_rect)
+        # all_fonts = pygame.font.get_fonts()
+        # print(all_fonts)
+        font = pygame.font.SysFont('roboto', 23)
 
-        # text = alive_font.render("Still Alive: " + str(still_alive), True, (0, 0, 0))
-        # text_rect = text.get_rect()
-        # text_rect.center = (900, 490)
-        # screen.blit(text, text_rect)
+        text = font.render("Generation: " + str(current_generation), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.center = (100, 570)
+        screen.blit(text, text_rect)
+
+        text = font.render("Current Population: " + str(still_alive), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.center = (650, 570)
+        screen.blit(text, text_rect)
 
         pygame.display.flip()
         clock.tick(60) # 60 FPS
