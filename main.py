@@ -4,14 +4,14 @@ import pygame, sys, math
 WIDTH = 800
 HEIGHT = 600
 FPS = 60
-CAR_SIZE = 35
+CAR_SIZE = 30
 STEERING = 5
 INITIAL_SPEED = 1
 COLLISION_COLOR = (90, 189, 66, 255)
 
 # Collision and Lidar Vision Settings
 POINT_SIZE = 5
-CIRCLE_SIZE = 5
+CIRCLE_SIZE = 3
 
 current_generation = 0
 
@@ -105,7 +105,7 @@ class Racecar:
         return self.alive
 
     def calculate_reward(self):
-        return self.distance_driven / 50.0 # You can change this number
+        return (2*self.distance_driven / 50.0)  - (self.time_driven/100.0) # You can change this number
 
     def draw_screen(self, screen, road):
         screen.blit(self.rotated_sprite, self.position)

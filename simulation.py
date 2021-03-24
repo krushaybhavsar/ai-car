@@ -13,7 +13,7 @@ def run_simulation(genomes, config):
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
-    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road.png')
+    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road2.png')
     
     step = 0
     for i, g in genomes:
@@ -22,7 +22,7 @@ def run_simulation(genomes, config):
         g.fitness = 0
 
         cars.append(Racecar(10, step))
-        step += 0.25
+        step += 0.1
     
     global current_generation
     current_generation += 1
@@ -62,7 +62,7 @@ def run_simulation(genomes, config):
             break
 
         counter += 1
-        if counter == 30 * 40: # Stop After About 20 Seconds
+        if counter == 40 * 50: # Stop After About 30 Seconds
             break
 
         # Draw Map And All Cars That Are 
