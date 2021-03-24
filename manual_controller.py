@@ -1,12 +1,17 @@
-import pygame
+import pygame, random
 from main import *
 
 def run_game():
-    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road.png')
+    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road1.png')
+    car_imgs = [pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car1.png'),
+                pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car2.png'),
+                pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car3.png'),
+                pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car4.png'),
+                pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car5.png')]
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    app = Racecar(1,0)
+    app = Racecar(1, 0, random.choice(car_imgs))
     run(app, screen, clock, road)
 
 def run(app, screen, clock, road):
@@ -17,12 +22,15 @@ def run(app, screen, clock, road):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]: 
                 hide_road = True
-            else:
+            elif not keys[pygame.K_SPACE]:
                 hide_road = False
             screen.blit(road, (0, 0))
             if hide_road:
                 screen.fill((0, 0, 0))
-            app.draw_screen(screen, road)
+            if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+                app.draw_screen(screen, road, True)
+            elif not keys[pygame.K_LSHIFT] or not keys[pygame.K_RSHIFT]:
+                app.draw_screen(screen, road, False)
             pygame.display.update()
             control(app)
             manual_check_collision(app, road)

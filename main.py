@@ -10,16 +10,16 @@ INITIAL_SPEED = 1
 COLLISION_COLOR = (90, 189, 66, 255)
 
 # Collision and Lidar Vision Settings
-POINT_SIZE = 5
-CIRCLE_SIZE = 3
+POINT_SIZE = 4
+CIRCLE_SIZE = 4
 
 current_generation = 0
 
 class Racecar:
 
-    def __init__(self, set_speed_num, y_step):
+    def __init__(self, set_speed_num, y_step, car_img):
         self.running = True
-        self.car = pygame.transform.scale(pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car.png'), (CAR_SIZE, CAR_SIZE))
+        self.car = pygame.transform.scale(car_img, (CAR_SIZE, CAR_SIZE))
         self.rotated_sprite = self.car
         self.position = [320, 480+y_step]
         self.alive = True
@@ -91,6 +91,7 @@ class Racecar:
         for point in self.points:
             if road.get_at((int(point[0][0]), int(point[0][1]))) == COLLISION_COLOR:
                 self.alive = False
+                self.time_driven = 0
                 break
 
     def get_distance(self):
@@ -105,12 +106,13 @@ class Racecar:
         return self.alive
 
     def calculate_reward(self):
-        return (2*self.distance_driven / 50.0)  - (self.time_driven/100.0) # You can change this number
+        return (2*self.distance_driven / 50.0)  - (self.time_driven/50.0) # You can change this number
 
-    def draw_screen(self, screen, road):
+    def draw_screen(self, screen, road, draw_radars):
         screen.blit(self.rotated_sprite, self.position)
-        # for point in self.points:
-        #     pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
-        # for ray in self.lidar_rays:
-        #     pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
-        #     pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
+        if (draw_radars):
+            for point in self.points:
+                pygame.draw.circle(screen, point[1], (point[0][0], point[0][1]), POINT_SIZE)
+            for ray in self.lidar_rays:
+                pygame.draw.line(screen, (255, 255, 0), self.center, ray[0])
+                pygame.draw.circle(screen, (255, 255, 0), ray[0], CIRCLE_SIZE)
