@@ -1,8 +1,9 @@
+from matplotlib.pyplot import plot
 import pygame, sys, neat
 from main import *
 
 def run_simulation(genomes, config):
-
+    
     hide_road = False
     
     nets = []
@@ -14,11 +15,10 @@ def run_simulation(genomes, config):
                 pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car4.png'),
                 pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car5.png')]
 
-    # Initialize PyGame and display
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
-    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road2.png')
+    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road1.png')
     
     step = 0
     img_num = 0
@@ -27,7 +27,7 @@ def run_simulation(genomes, config):
         nets.append(net)
         g.fitness = 0
 
-        cars.append(Racecar(5, step, car_imgs[img_num]))
+        cars.append(Racecar(4, step, car_imgs[img_num]))
         img_num += 1
         if img_num == 5:
             img_num = 0
@@ -51,14 +51,14 @@ def run_simulation(genomes, config):
             output = nets[i].activate(car.get_distance())
             choice = output.index(max(output))
             if choice == 0:
-                car.angle += 12 # Left
+                car.angle += 8 # Left
             elif choice == 1:
-                car.angle -= 12 # Right
+                car.angle -= 8 # Right
             elif choice == 2:
-                if(car.speed - 2 >= 12):
+                if car.speed > 4:
                     car.speed -= 3 # Slow Down
             else:
-                car.speed += 3 # Speed Up
+                car.speed += 1 # Speed Up
         
         # Check if car Is still alive
         # Tncrease fitness if yes and break loop if not
@@ -72,7 +72,7 @@ def run_simulation(genomes, config):
             break
 
         counter += 1
-        if counter == 40 * 50: # Stop After About 30 Seconds
+        if counter == 20 * 40: # Stop After About 30 Seconds
             break
 
         # Draw map and all cars that are still alive
@@ -107,9 +107,6 @@ def run_simulation(genomes, config):
         pygame.display.flip()
         clock.tick(60) # 60 FPS
 
-# app = Racecar()
-# app.run(screen, clock, road)
-
 if __name__ == "__main__":
     
     # Load config
@@ -125,6 +122,10 @@ if __name__ == "__main__":
     population.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
-    
     # Run simulation for a maximum of 1000 generations
+    start = False
+    keyString = ""
+    while not start:
+        keyString = input("Input 'start' to start the simulation >>> ")
+        start = (keyString == "start")
     population.run(run_simulation, 1000)
