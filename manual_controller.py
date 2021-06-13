@@ -2,7 +2,7 @@ import pygame, random
 from main import *
 
 def run_game():
-    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road3.png')
+    road = pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\road1.png')
     car_imgs = [pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car1.png'),
                 pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car2.png'),
                 pygame.image.load(r'C:\Users\krush\OneDrive\Desktop\Side Projects\ai-car\imgs\car3.png'),
@@ -11,7 +11,7 @@ def run_game():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    app = Racecar(10, 0, random.choice(car_imgs))
+    app = Racecar(2, 0, random.choice(car_imgs))
     run(app, screen, clock, road)
 
 def run(app, screen, clock, road):
