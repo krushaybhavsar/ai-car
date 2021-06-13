@@ -4,6 +4,17 @@ Check out my YouTube video explaining this topic!
 
 ## Implementation of the AI
 
+#### Simple Controls
+<p>Implemented driving capabilities (left arrow to turn left, right arrow to turn right)</p>
+![Stage 1 - Simple Controls, No Collision](GIF TO BE ADDED)
+
+#### Collision Points
+<p>Implemented sensors so that it is recognizable when a point of the car goes off the road.</p>
+![Stage 2 - Collision Points](GIF TO BE ADDED)
+
+#### Lidar Rays
+<p>Added lidar rays to make it possible to calculate how far the edge of the road is from a location on the car.</p>
+![Stage 3 - Lidar Ray Vision](GIF TO BE ADDED)
 
 ## Background on Neural Neworks and NeuroEvolution of Augmenting Topologies
 Written by Krushay Bhavsar, April 12th 2021
